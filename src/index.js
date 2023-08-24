@@ -78,4 +78,4 @@ function locationErrorMsg() {
 }
 
 pageLoad();
-createForecastArray("Glasnevin");
+createForecastArray("auto:ip");
