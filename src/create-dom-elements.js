@@ -21,6 +21,18 @@ function createParagraph(text, paraId, ...paraClasses) {
   return p;
 }
 
+function createSpan(text, spanId, ...spanClasses) {
+  const span = document.createElement("span");
+  span.textContent = text;
+  if (spanId) {
+    span.id = spanId;
+  }
+  spanClasses.forEach((spanClass) => {
+    span.classList.add(spanClass);
+  });
+  return span;
+}
+
 function createImage(imgSrc, imgId, ...imgClasses) {
   const img = document.createElement("img");
   img.src = imgSrc;
@@ -33,4 +45,4 @@ function createImage(imgSrc, imgId, ...imgClasses) {
   return img;
 }
 
-export { createDiv, createParagraph, createImage };
+export { createDiv, createParagraph, createImage, createSpan };

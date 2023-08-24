@@ -1,4 +1,4 @@
-import { createDiv, createImage, createParagraph } from "./create-dom-elements";
+import { createDiv, createImage, createSpan } from "./create-dom-elements";
 
 function displayHourlyWeather(dayForecast) {
   const main = document.getElementById("main");
@@ -15,17 +15,53 @@ function displayHourlyWeather(dayForecast) {
 function createHourlyWeatherDisplay(hourForecast) {
   const hourlyWeatherDisplay = createDiv("", "hourly-weather-display");
   hourlyWeatherDisplay.appendChild(
-    createParagraph(
-      `${hourForecast.tempC}°C`,
-      "",
-      "hourly-weather-display-temp"
-    )
+    createSpan(hourForecast.tempC, "", "hourly-weather-display-temp", "celsius")
   );
   hourlyWeatherDisplay.appendChild(
     createImage(hourForecast.condition.icon, "", "weather-icon")
   );
   const forecastTime = hourForecast.time.split(" ")[1];
-  hourlyWeatherDisplay.appendChild(createParagraph(forecastTime));
+  hourlyWeatherDisplay.appendChild(createSpan(forecastTime));
+
+  hourlyWeatherDisplay.addEventListener("click", ()=>{
+    displayDetailedWeatherDisplay(hourForecast);
+  });
   return hourlyWeatherDisplay;
 }
-export { displayHourlyWeather };
+
+function displayDetailedWeatherDisplay(hourForecast) {
+  if(document.querySelector("#detailed-weather-display")){
+    document.querySelector("#detailed-weather-display").remove();
+  }
+  const main = document.getElementById("main");
+  const detailedWeatherDisplay = createDiv("detailed-weather-display");
+  // main.appendChild(detailedWeatherDisplay);
+  main.insertAdjacentElement("beforebegin", detailedWeatherDisplay);
+  detailedWeatherDisplay.appendChild(
+    createSpan(hourForecast.tempC, "", "detailed-weather-temp", "celsius")
+  );
+  const wrapper = createDiv("", "wrapper");
+  detailedWeatherDisplay.appendChild(wrapper);
+  wrapper.appendChild(
+    createSpan(
+      `Feels like: ${hourForecast.feelTempC}`,
+      "",
+      "feels-like-temp",
+      "celsius"
+    )
+  );
+  wrapper.appendChild(
+    createSpan(
+      `Chance of rain: ${hourForecast.chanceOfRain}%`,
+      "chance-of-rain"
+    )
+  );
+  wrapper.appendChild(
+    createSpan(`Wind speed: ${hourForecast.windSpeedKPH}`, "wind-speed")
+  );
+  wrapper.appendChild(
+    createSpan(`Condition: ${hourForecast.condition.text}`, "condition")
+  );
+}
+
+export { displayHourlyWeather, displayDetailedWeatherDisplay };
