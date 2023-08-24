@@ -1,6 +1,9 @@
 import { createDiv, createImage, createSpan } from "./create-dom-elements";
 
 function displayHourlyWeather(dayForecast) {
+  if (document.querySelector(".hourly-weather-display-container")) {
+    document.querySelector(".hourly-weather-display-container").remove();
+  }
   const main = document.getElementById("main");
   const hourlyWeatherDisplayContainer = createDiv(
     "",
@@ -23,19 +26,18 @@ function createHourlyWeatherDisplay(hourForecast) {
   const forecastTime = hourForecast.time.split(" ")[1];
   hourlyWeatherDisplay.appendChild(createSpan(forecastTime));
 
-  hourlyWeatherDisplay.addEventListener("click", ()=>{
+  hourlyWeatherDisplay.addEventListener("click", () => {
     displayDetailedWeatherDisplay(hourForecast);
   });
   return hourlyWeatherDisplay;
 }
 
 function displayDetailedWeatherDisplay(hourForecast) {
-  if(document.querySelector("#detailed-weather-display")){
+  if (document.querySelector("#detailed-weather-display")) {
     document.querySelector("#detailed-weather-display").remove();
   }
   const main = document.getElementById("main");
   const detailedWeatherDisplay = createDiv("detailed-weather-display");
-  // main.appendChild(detailedWeatherDisplay);
   main.insertAdjacentElement("beforebegin", detailedWeatherDisplay);
   detailedWeatherDisplay.appendChild(
     createSpan(hourForecast.tempC, "", "detailed-weather-temp", "celsius")

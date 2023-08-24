@@ -5,18 +5,24 @@ import {
   displayDetailedWeatherDisplay,
   displayHourlyWeather,
 } from "./weather-display";
+import { createSpan } from "./create-dom-elements";
 
-async function createForecastArray() {
-  const weather = await getWeather("Dublin");
+async function createForecastArray(location) {
+  const weather = await getWeather(location);
+  if (weather.error) {
+    if (weather.error.code === 1006) {
+      locationErrorMsg();
+    }
+    console.log(`Error fetching your data: ${weather.error.message}`);
+    return;
+  }
   let forecast = {};
   const currentDate = new Date();
   const currentHour = roundMinutes(currentDate).getHours();
-  console.log(currentHour);
 
   weather.forecast.forecastday.forEach((day, index) => {
     forecast[`day${index}`] = day;
   });
-  console.log(forecast);
   const dayForecast = createDayForecast(forecast.day0);
   displayDetailedWeatherDisplay(dayForecast[currentHour]);
   displayHourlyWeather(dayForecast);
@@ -38,7 +44,6 @@ function createDayForecast(forecast) {
     };
     forecastArray.push(hourForecast);
   });
-  console.log(forecastArray);
   return forecastArray;
 }
 
@@ -50,5 +55,27 @@ function roundMinutes(date) {
   return date;
 }
 
+
+export {
+  createForecastArray
+}
+
+function locationErrorMsg() {
+  const locationErrorMsg = createSpan(
+    "No location found, please provide a city or region name",
+    "",
+    "no-location-found-error"
+  );
+  document
+    .querySelector(".search-bar-container")
+    .insertAdjacentElement("beforeend", locationErrorMsg);
+  setTimeout(() => {
+    locationErrorMsg.classList.add("fade-out");
+  }, 2000);
+  locationErrorMsg.addEventListener("animationend", () => {
+    locationErrorMsg.remove();
+  });
+}
+
 pageLoad();
-createForecastArray();
+createForecastArray("Glasnevin");

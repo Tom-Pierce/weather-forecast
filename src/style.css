@@ -7,6 +7,10 @@
   font-weight: 500;
 }
 
+*:focus-visible {
+  outline: none;
+}
+
 body {
   background-attachment: fixed;
   background-size: cover;
@@ -14,8 +18,23 @@ body {
   color: white;
 }
 
-.header{
+.header {
   display: flex;
+}
+
+.header .search-bar-container {
+  display: flex;
+  flex-direction: column;
+  margin-left: auto;
+  max-width: 250px;
+  position: relative;
+}
+
+.no-location-found-error {
+  color: rgb(255, 102, 102);
+  top: 4rem;
+  position: absolute;
+  margin: 0 1rem;
 }
 
 .header .search-bar {
@@ -27,13 +46,13 @@ body {
   background-color: rgba(255, 255, 255, 0.158);
   height: 2rem;
   margin: 1rem;
-  margin-left: auto;
   font-weight: 500;
   font-size: 1rem;
 }
 
 #detailed-weather-display {
   display: flex;
+  align-items: center;
   border-radius: 0.75rem;
   padding: 2rem 8rem 4rem 8rem;
 }
@@ -43,10 +62,10 @@ body {
   position: relative;
   font-size: 6rem;
   font-weight: 700;
-  line-height: 0.75;
   margin-right: 1rem;
 }
 .detailed-weather-temp.celsius::after {
+  padding: 0 0.25rem;
   font-size: 2rem;
   content: "°C";
 }
@@ -73,6 +92,11 @@ body {
   padding: 0.5rem;
   align-items: center;
 }
+
+.hourly-weather-display:hover {
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.158);
+}
 .hourly-weather-display-temp.celsius::after,
 .feels-like-temp.celsius::after {
   content: "°C";
@@ -81,4 +105,21 @@ body {
 .hourly-weather-display img {
   height: 2rem;
   width: 2rem;
+}
+
+.hide {
+  display: none;
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.fade-out {
+  animation: fadeOut 1s ease-in-out forwards;
 }
